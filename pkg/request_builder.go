@@ -116,6 +116,17 @@ type QueryRequestBuilder struct {
 	json       interface{}
 }
 
+func (b *QueryRequestBuilder) OverrideRequestHeaders(h http.Header) *QueryRequestBuilder {
+
+	for key, vals := range h {
+		for _, val := range vals {
+			b.header.Set(key, val)
+		}
+	}
+
+	return b
+}
+
 // Execute sends the query request and unmarshals the response JSON into the provided object.
 func (b *QueryRequestBuilder) Execute(r interface{}) error {
 	return b.ExecuteWithContext(context.Background(), r)
